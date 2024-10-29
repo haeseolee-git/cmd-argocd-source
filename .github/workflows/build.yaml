@@ -54,10 +54,10 @@ jobs:
       - name: Checkout kustomize repository
         uses: actions/checkout@v2
         with:
-          repository: ${{ secrets.GIT_USERNAME }}/k8s-manifest-repo
+          repository: ${{ secrets.GIT_USERNAME }}/cmt-argocd-manifest
           ref: main
           token: ${{ secrets.ACTION_TOKEN }}
-          path: k8s-manifest-repo
+          path: cmt-argocd-manifest
 
       - name: Update Kubernetes resources
         run: |
