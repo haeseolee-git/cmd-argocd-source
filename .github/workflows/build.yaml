@@ -54,23 +54,23 @@ jobs:
       - name: Checkout kustomize repository
         uses: actions/checkout@v2
         with:
-          repository: ${{ secrets.GIT_USERNAME }}/cmt-argocd-manifest
+          repository: ${{ secrets.GIT_USERNAME }}/${{ secrets.MANIFEST_REPO }}
           ref: main
           token: ${{ secrets.ACTION_TOKEN }}
-          path: cmt-argocd-manifest
+          path: ${{ secrets.MANIFEST_REPO }}
 
       - name: Update Kubernetes resources
         run: |
           echo ${{ steps.login-ecr.outputs.registry }}
           echo ${{ secrets.ECR_REPOSITORY }}
           echo ${{ steps.image-info.outputs.image_tag }}
-          cd k8s-manifest-repo/overlays/dev/
+          cd ${{ secrets.MANIFEST_REPO }}/overlays/dev/
           kustomize edit set image ${{ steps.login-ecr.outputs.registry}}/${{ secrets.ECR_REPOSITORY }}=${{ steps.login-ecr.outputs.registry}}/${{ secrets.ECR_REPOSITORY }}:${{ steps.image-info.outputs.image_tag }}
           cat kustomization.yaml
 
       - name: Commit files
         run: |
-          cd k8s-manifest-repo
+          cd ${{ secrets.MANIFEST_REPO }}
           git config --global user.email "github-actions@github.com"
           git config --global user.name "github-actions"
           git commit -am "Update image tag"
